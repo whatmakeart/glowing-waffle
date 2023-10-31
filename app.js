@@ -2,6 +2,9 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 let shapes = [];
+let timeout;
+const waffleImage = new Image();
+waffleImage.src = 'glowing-waffle.png';
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -48,6 +51,13 @@ function drawShapes() {
             shapes.shift();
         }
     });
+
+    if (timeout) {
+        const lastShape = shapes[shapes.length - 1];
+        if (lastShape) {
+            ctx.drawImage(waffleImage, lastShape.x - 50, lastShape.y - 50, 100, 100);
+        }
+    }
 }
 
 function animate() {
@@ -56,7 +66,9 @@ function animate() {
 }
 
 canvas.addEventListener('mousemove', (event) => {
+    clearTimeout(timeout);
     createShape(event.clientX, event.clientY);
+    timeout = setTimeout(() => {}, 2000);
 });
 
 resizeCanvas();
