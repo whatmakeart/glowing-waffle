@@ -65,11 +65,23 @@ function animate() {
     drawShapes();
 }
 
-canvas.addEventListener('mousemove', (event) => {
+function handleInteraction(event) {
     clearTimeout(timeout);
-    createShape(event.clientX, event.clientY);
+    let x, y;
+    if (event.touches) {
+        x = event.touches[0].clientX;
+        y = event.touches[0].clientY;
+    } else {
+        x = event.clientX;
+        y = event.clientY;
+    }
+    createShape(x, y);
     timeout = setTimeout(() => {}, 2000);
-});
+}
+
+canvas.addEventListener('mousemove', handleInteraction);
+canvas.addEventListener('touchstart', handleInteraction);
+canvas.addEventListener('touchmove', handleInteraction);
 
 resizeCanvas();
 window.addEventListener('resize', () => {
