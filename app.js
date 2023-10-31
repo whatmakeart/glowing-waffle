@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 let shapes = [];
-let timeout;
+const waffles = [];
 const waffleImage = new Image();
 waffleImage.src = 'glowing-waffle.png';
 
@@ -30,6 +30,10 @@ function createShape(x, y) {
 function drawShapes() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    waffles.forEach(waffle => {
+        ctx.drawImage(waffleImage, waffle.x - 50, waffle.y - 50, 100, 100);
+    });
+
     shapes.forEach(shape => {
         shape.points.forEach(point => {
             ctx.beginPath();
@@ -51,13 +55,6 @@ function drawShapes() {
             shapes.shift();
         }
     });
-
-    if (timeout) {
-        const lastShape = shapes[shapes.length - 1];
-        if (lastShape) {
-            ctx.drawImage(waffleImage, lastShape.x - 50, lastShape.y - 50, 100, 100);
-        }
-    }
 }
 
 function animate() {
@@ -65,23 +62,24 @@ function animate() {
     drawShapes();
 }
 
-function handleInteraction(event) {
-    clearTimeout(timeout);
-    let x, y;
-    if (event.touches) {
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
-    } else {
-        x = event.clientX;
-        y = event.clientY;
-    }
-    createShape(x, y);
-    timeout = setTimeout(() => {}, 2000);
-}
+canvas.addEventListener('click', (event) => {
+    waffles.forEach((waffle, index) => {
+        const dx = event.clientX - waffle.x;
+        const dy = event.clientY - waffle.y;
+        if (Math.sqrt(dx * dx + dy * dy) <= 50) {
+            createShape(waffle.x, waffle.y);
+            waffles.splice(index, 1);
+        }
+    });
+});
 
-canvas.addEventListener('mousemove', handleInteraction);
-canvas.addEventListener('touchstart', handleInteraction);
-canvas.addEventListener('touchmove', handleInteraction);
+function spawnWaffle() {
+    waffles.push({
+        x: 50 + Math.random() * (window.innerWidth - 100),
+        y: 50 + Math.random() * (window.innerHeight - 100)
+    });
+    setTimeout(spawnWaffle, Math.random() * 2500 + 500);
+}
 
 resizeCanvas();
 window.addEventListener('resize', () => {
@@ -89,3 +87,4 @@ window.addEventListener('resize', () => {
 });
 
 animate();
+spawnWaffle(); // Initial waffle spawn
