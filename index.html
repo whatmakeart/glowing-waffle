@@ -1,20 +1,39 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Infinite Tunnel Animation</title>
+    <title>Waffle Clicker</title>
+    <link rel="stylesheet" href="" />
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
       body {
         margin: 0;
       }
+      #container {
+        width: 100%;
+        position: relative;
+      }
+      #canvas,
+      #counter {
+        position: absolute;
+      }
       #canvas {
-        display: block;
+        z-index: 1;
+      }
+
+      #counter {
+        z-index: 3;
       }
     </style>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <div id="container">
+      <div id="counter"></div>
+      <canvas id="canvas"></canvas>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>
