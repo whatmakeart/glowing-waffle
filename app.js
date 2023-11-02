@@ -1,5 +1,3 @@
-/** @format */
-
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -95,13 +93,14 @@ function drawShapes() {
   ctx.font = '30px "Press Start 2P"'; // Ensure this font is loaded
   ctx.fillStyle = "green";
 
-  const textPadding = 10;
+  const textPadding = 5;
   const titleTextMetrics = ctx.measureText(titleText);
   const scoreTextMetrics = ctx.measureText(scoreText);
 
   // Check if the canvas is narrow (e.g., mobile device width)
   const isNarrowCanvas = canvas.width < 956; // You can adjust this threshold as needed
   if (isNarrowCanvas) {
+    ctx.font = '18px "Press Start 2P"'; // Ensure this font is loaded
     // Stack the title and score texts on top of each other
     ctx.fillRect(
       0,
@@ -109,7 +108,7 @@ function drawShapes() {
       canvas.width,
       titleTextMetrics.actualBoundingBoxAscent +
         scoreTextMetrics.actualBoundingBoxAscent +
-        10 * textPadding
+        12 * textPadding
     ); // Background rectangle for the score
 
     // Title Text
@@ -122,7 +121,7 @@ function drawShapes() {
     ctx.fillText(
       scoreText,
       canvas.width / 2,
-      titleTextMetrics.actualBoundingBoxAscent + 6 * textPadding
+      titleTextMetrics.actualBoundingBoxAscent + 7 * textPadding
     );
   } else {
     // Draw the texts side by side
